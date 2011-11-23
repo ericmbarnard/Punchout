@@ -7,27 +7,25 @@
     ko.bindingHandlers['date'] = {
         init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
             // This will be called when the binding is first applied to an element
-            var allBindings, options, valToUpdate, options = { defaultDate: new Date() };
+            var allBindings, valToUpdate, options = { defaultDate: new Date() };
+            var $picker = $(element).datepicker(options);
 
             valToUpdate = valueAccessor();
 
             allBindings = allBindingsAccessor();
             if (allBindings['dateOptions']) {
                 options = allBindings['dateOptions'];
-
             }
 
-            if (ko.isObservable(valToUpdate)) {
-                var changeHandler = function (dateText, picker) {
-                    if (dateText) {
-                        valToUpdate(new Date(dateText));
-                    }
-                    return true;
-                };
-                options.onClose = changeHandler;
-            }
-
-            $(element).datepicker(options);
+            //handle field changing
+            ko.utils.registerEventHandler(element, "change", function(){
+                 valToUpdate($(element).datepicker("getDate"));
+            });
+            
+            //handle disposal (if KO removes by the template binding)
+            ko.utils.domNodeDisposal.addDisposeCallback(element, function(){
+                $(element).datepicker("destroy");
+            });            
         },
         update: function (element, valueAccessor, allBindingsAccessor, viewModel) {
             // This will be called once when the binding is first applied to an element,

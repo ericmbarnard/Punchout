@@ -1,4 +1,11 @@
-﻿module("datePicker tests");
+﻿module("datePicker tests", {
+    setup: function(){
+
+        $('#theTest').datepicker("destroy");
+        $('#date-picker-test-container').empty();
+        $('#date-picker-test-container').html('<input id="theTest" type="text" data-bind="date: myDate, dateOptions: {autoSize: true}" />');
+    }
+});
 
 test("datepicker returns given date", function () {
     var date = new Date();
@@ -41,12 +48,11 @@ test("setting datepicker date updates viewModel", function () {
 
     var test = new Date();
 
-
-    $('#theTest').datepicker("show");
-
     $('#theTest').datepicker("setDate", test);
 
-    $('#theTest').datepicker("hide");
+    ko.utils.triggerEvent(document.getElementById('theTest'), 'change');
 
     equal(test.toDateString(), viewModel.myDate().toDateString(), "ko date matches datepicker date");
+
+
 });
