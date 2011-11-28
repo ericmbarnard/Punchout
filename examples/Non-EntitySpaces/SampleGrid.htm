@@ -13,16 +13,8 @@
 <body>
 
    <!-- poGrid using the new KO template syntax -->
-   <table>
-        <tr>
-            <td valign="top">
-                <div data-bind="poGrid: myView1"></div>
-            </td>
-            <td valign="top">
-                <div data-bind="poGrid: myView2"></div>
-            </td>	
-        </tr>
-    </table>
+   <div id="poGrid1" data-bind="poGrid: myView1" style="float: left;"></div>
+   <div id="poGrid2" data-bind="poGrid: myView2" ></div>
     
     <br/><br/>
     <a href="https://github.com/EntitySpaces/Punchout/blob/master/examples/Non-EntitySpaces/SampleGrid.htm" target="new">Source for this Page</A>
@@ -127,7 +119,7 @@ myView2.pager.enabled(true);
 myView2.headerEnabled(true);
 myView2.footerEnabled(true);
 
-ko.applyBindings(myView1);
-ko.applyBindings(myView2);
-
+//ko.applyBindings(myView1, document.getElementById('poGrid1'));
+//ko.applyBindings(myView2, document.getElementById('poGrid2'));
+ko.applyBindings({ myView1: myView1, myView2: myView2 });
 </script>
